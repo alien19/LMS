@@ -90,6 +90,32 @@ app.get('/api/students/:id' , (req , res)=>{
     res.send(student);
  });
 
+app.put('/api/courses/:id', (req, res) =>{
+    const course = courses.find(c => c.id === parseInt(req.params.id));
+    if(!course) res.status(404).send('The course with the given ID is not available');
+
+    const {error} = validateCourse(req.body);
+    if (error) {
+        res.status(400).send(error.details[0].message);
+        return;
+    }
+
+    course.name = req.body.name;
+    course.code = req.body.code;
+    course.description = req.body.description;
+    res.send(course);
+});
+
+function student_put(req, res){
+    const student =  students.find(s=>s.id===parseInt(req.params.id));
+    if(!student){return res.status(404).send('The student with the given ID was not found');}
+    const {error} = validateStudent(req.body);
+    if(error){return res.status(400).send(error.details[0].message);}
+    student.name=req.body.name;
+    student.code=req.body.code;
+    res.send(student);
+}
+
 app.delete('/api/courses/:id', (req, res) =>{
     const course = courses.find(c => c.id == parseInt(req.params.id));
     if(!course) res.status(404).send('The course with the given ID is not available');

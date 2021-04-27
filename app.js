@@ -4,6 +4,9 @@ const app = express();
 
 app.use(express.urlencoded({extended: true}));
 
+// Dynamically assign a port
+const port = process.env.PORT || 3000;
+app.listen(port, ()=>console.log(`Listening on port ${port}...`));
 // where the DB should be called
 const courses = [
     {name: 'course1', code: 'CSE 321', id: 1, description: 'a course for ....'},
@@ -84,12 +87,24 @@ app.get('/api/courses/:id' , (req , res)=>{
 app.get('/api/students/:id' , (req , res)=>{
     const student = students.find(s => s.id == parseInt(req.params.id));
     if(!student) res.status(404).send('The student with the given ID is not available');
-    res.send(student)
+    res.send(student);
  });
 
-// Dynamically assign a port
-const port = process.env.PORT || 3000;
-app.listen(port, ()=>console.log(`Listening on port ${port}...`));
+app.delete('/api/courses/:id', (req, res) =>{
+    const course = courses.find(c => c.id == parseInt(req.params.id));
+    if(!course) res.status(404).send('The course with the given ID is not available');
+    res.send(course);
+    const index = courses.indexOf(course);
+    courses.splice(index, 1);
+});
+ app.delete('/api/students/:id', (req, res) =>{
+    const student = students.find(s => s.id == parseInt(req.params.id));
+    if(!student) res.status(404).send('The student with the given ID is not available');
+    res.send(student);
+    const index = students.indexOf(student);
+    students.splice(index, 1);
+ });
+
 
 function validateCourse(course){
     const schema = Joi.object({

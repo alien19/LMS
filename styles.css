@@ -1,0 +1,21 @@
+Sname {
+    display: inline-block;   
+}
+
+Sname label {
+    display: block;
+    margin-left: 40px;
+}
+Sname input{
+    /* text-indent: 40px; */
+    margin-left: 40px;
+}
+
+Student label {
+    margin-left: 40px;
+    font-size: 18px;
+}
+Student input{
+    /* text-indent: 40px; */
+    margin-left: 40px;
+}
